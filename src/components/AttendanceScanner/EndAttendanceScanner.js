@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import './AttendanceScanner.css';
 
 const EndAttendanceScanner = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const [toggleState, setToggleState] = useState(false);
+    const [toggleTimestamp, setToggleTimestamp] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(doc(db, 'settings', 'attendanceControl'), (doc) => {
+            const data = doc.data();
+            setToggleState(data.toggleState);
+            setToggleTimestamp(data.timestamp ? data.timestamp.toDate() : null);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const handleChange = (event) => {
         setEmail(event.target.value);
@@ -14,6 +26,19 @@ const EndAttendanceScanner = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!toggleState) {
+            setError('Updates are blocked by the admin.');
+            return;
+        }
+
+        const currentTime = new Date();
+        const timeDiff = (currentTime - toggleTimestamp) / 1000; // Time in seconds
+
+        if (timeDiff > 15) { // 15 seconds for development
+            setError('The toggle state has expired.');
+            return;
+        }
 
         if (Cookies.get('endAttendanceMarked')) {
             setError('Attendance already marked.');
