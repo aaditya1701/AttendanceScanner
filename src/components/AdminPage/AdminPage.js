@@ -66,21 +66,25 @@ const AdminPage = () => {
     }, [timer, handleToggle]);
 
     const handleLogin = async (event) => {
-        event.preventDefault();
-        const docRef = doc(db, 'settings', 'credentials');
-        const docSnap = await getDoc(docRef);
+        try {
+            event.preventDefault();
+            const docRef = doc(db, 'settings', 'credentials');
+            const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data.userId === userId && data.password === password) {
-                setIsAuthenticated(true);
-                setError(null);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.userId === userId && data.password === password) {
+                    setIsAuthenticated(true);
+                    setError(null);
+                } else {
+                    setError('Invalid credentials');
+                    setIsAuthenticated(false);
+                }
             } else {
-                setError('Invalid credentials');
-                setIsAuthenticated(false);
+                setError('Credentials not found');
             }
-        } else {
-            setError('Credentials not found');
+        } catch (error) {
+            alert("Internet not available");
         }
     };
 
