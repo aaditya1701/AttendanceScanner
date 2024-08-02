@@ -1,20 +1,21 @@
+// import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { collection, query, where, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import './AttendanceScanner.css';
 
 const StartAttendanceScanner = () => {
     const [email, setEmail] = useState('');
+    const [captcha, setCaptcha] = useState('');
+    const [dbCaptcha, setDbCaptcha] = useState('');
     const [error, setError] = useState(null);
     const [toggleState, setToggleState] = useState(false);
-    const [toggleTimestamp, setToggleTimestamp] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onSnapshot(doc(db, 'settings', 'attendanceControl'), (doc) => {
             const data = doc.data();
             setToggleState(data.toggleState);
-            setToggleTimestamp(data.timestamp ? data.timestamp.toDate() : null);
+            setDbCaptcha(data.captcha);
         });
 
         return () => unsubscribe();
@@ -24,26 +25,29 @@ const StartAttendanceScanner = () => {
         setEmail(event.target.value);
     };
 
+    const handleCaptchaChange = (event) => {
+        setCaptcha(event.target.value);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setError(null); // Clear previous error messages
 
         if (!toggleState) {
             setError('Updates are blocked by the admin.');
             return;
         }
 
-        const currentTime = new Date();
-        const timeDiff = (currentTime - toggleTimestamp) / 1000; // Time in seconds
-
-        if (timeDiff > 15) { // 15 seconds for development
-            setError('The toggle state has expired.');
+        if (captcha !== dbCaptcha) {
+            setError('CAPTCHA is incorrect.');
             return;
         }
 
-        if (Cookies.get('startAttendanceMarked')) {
-            setError('Attendance already marked.');
-            return;
-        }
+        // Commenting out the cookie part
+        // if (Cookies.get('startAttendanceMarked')) {
+        //     setError('Attendance already marked.');
+        //     return;
+        // }
 
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('email', '==', email));
@@ -56,19 +60,21 @@ const StartAttendanceScanner = () => {
                     startFlag: true
                 });
 
-                Cookies.set('startAttendanceMarked', 'true', { expires: 1 });
+                // Commenting out the cookie part
+                // Cookies.set('startAttendanceMarked', 'true', { expires: 1 });
                 alert('Attendance marked successfully!');
             } else {
                 setError('Email not found.');
             }
         } catch (error) {
-            setError('Error updating attendance: ' + error.message);
+            console.log('Error updating attendance: ' + error.message);
         }
     };
 
     return (
         <div>
-            <h1>Event Start</h1>
+            <h1 align="center">Bad Talks</h1>
+            <h2>Event Start</h2>
             <form onSubmit={handleSubmit} className="attendance-form">
                 <div>
                     <label htmlFor="email">Email:</label>
@@ -77,6 +83,14 @@ const StartAttendanceScanner = () => {
                         id="email"
                         value={email}
                         onChange={handleChange}
+                        required
+                    />
+                    <label htmlFor="captcha">CAPTCHA:</label>
+                    <input
+                        type="text"
+                        id="captcha"
+                        value={captcha}
+                        onChange={handleCaptchaChange}
                         required
                     />
                 </div>
