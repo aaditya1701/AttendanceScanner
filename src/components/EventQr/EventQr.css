@@ -1,0 +1,9 @@
+.event-qr {
+    text-align: center;
+    padding: 20px;
+}
+
+.event-qr img {
+    max-width: 100%;
+    height: auto;
+}
