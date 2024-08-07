@@ -92,7 +92,7 @@ const AdminPage = () => {
 
     const filteredUsers = users.filter(user => {
         const lowercasedQuery = searchQuery.toLowerCase();
-        const userName = user.name ? user.name.toLowerCase() : '';
+        const userName = user.name ? user.name.toLowerCase() : user.firstName + user.lastName;
         const userEmail = user.email ? user.email.toLowerCase() : '';
         return (
             userName.includes(lowercasedQuery) ||
@@ -132,9 +132,9 @@ const AdminPage = () => {
                     <tbody>
                         {filteredUsers.map(user => (
                             <tr key={user.id}>
-                                <td>{user.name || 'N/A'}</td>
+                                <td>{user.name || user.firstName + ' ' + user.lastName || 'N/A'}</td>
                                 <td>{user.email || 'N/A'}</td>
-                                <td>{user.college || 'N/A'}</td>
+                                <td>{user.collegeName || 'N/A'}</td>
                                 <td>{user.year || 'N/A'}</td>
                                 <td>
                                     <label className="switch">

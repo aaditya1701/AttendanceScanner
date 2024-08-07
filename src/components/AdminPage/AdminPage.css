@@ -73,11 +73,13 @@ input:checked+.slider:before {
 /* Styles for the user table */
 
 .user-table {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
 }
 
 .user-table table {
-    width: 100%;
+    width: 95%;
     border-collapse: collapse;
 }
 
@@ -89,10 +91,18 @@ input:checked+.slider:before {
 }
 
 .user-table th {
-    background-color: #f4f4f4;
+    background-color: #9a9a9a;
 }
 
 .search {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 35%;
+    border-radius: 5px;
+    margin-left: 30px;
+    border: 2px solid black;
+
     margin-bottom: 20px;
 }
 

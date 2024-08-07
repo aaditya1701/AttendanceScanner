@@ -3,7 +3,34 @@
     padding: 20px;
 }
 
+.qrContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.rightDiv {
+    width: 50%;
+    display: flex;
+    justify-items: start;
+    align-items: center;
+    font-weight: bold;
+}
+
+.leftDiv {
+    width: 50%;
+    display: flex;
+    justify-items: start;
+    align-items: center;
+    font-weight: bold;
+}
+
+.qr {
+    padding-right: 25%;
+    width: 50%;
+    padding-left: 45%;
+}
+
 .event-qr img {
-    max-width: 100%;
-    height: auto;
+    width: 20px;
+    height: 20px;
 }

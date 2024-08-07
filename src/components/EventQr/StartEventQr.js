@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import qrCode from '../../assets/Event-Start.png';
 import './EventQr.css';
 
 const StartEventQr = () => {
-    const [timer, setTimer] = useState(15);
+    const [timer, setTimer] = useState(900);
     const [captcha, setCaptcha] = useState('');
-    const [imageUrl, setImageUrl] = useState('path/to/start-event-image.png'); // Replace with actual image path
+    const [imageUrl] = useState(qrCode); // Replace with actual image path
 
     useEffect(() => {
         // Generate a random captcha
@@ -57,10 +58,16 @@ const StartEventQr = () => {
 
     return (
         <div className="event-qr-page">
-            <h1>Start Event QR</h1>
-            <img src={imageUrl} alt="Event QR" />
-            <p>Captcha: {captcha}</p>
-            <p>Time Remaining: {timer}s</p>
+            <h1 align='center'>Event Start</h1>
+            <div className='qrContainer'>
+                <div className='leftDiv'>
+                    <img src={imageUrl} alt="Event QR" className='qr' />
+                </div>
+                <div className='rightDiv'>
+                    <p>Captcha: {captcha}  <br></br>
+                        Time Remaining: {Math.floor(timer / 60) + " min " + timer % 60 + " sec"}</p>
+                </div>
+            </div>
         </div>
     );
 };

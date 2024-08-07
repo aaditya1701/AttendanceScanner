@@ -2,15 +2,17 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDR9k-J1zMV8B9EjMKfrB6tBpYqJbrhC8o",
-    authDomain: "badtalks-3ecf3.firebaseapp.com",
-    projectId: "badtalks-3ecf3",
-    storageBucket: "badtalks-3ecf3.appspot.com",
-    messagingSenderId: "104082686480",
-    appId: "1:104082686480:web:e25703b49e8a0c53654095"
+    apiKey: "AIzaSyDYkMtLxcGQeL2r_KMSxudDf9YvYZfB-Pg",
+    authDomain: "bad-talks.firebaseapp.com",
+    projectId: "bad-talks",
+    storageBucket: "bad-talks.appspot.com",
+    messagingSenderId: "676174438926",
+    appId: "1:676174438926:web:f827c1123612bcbb97125f",
+    measurementId: "G-BLWVQXQW4B"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export { db };
+

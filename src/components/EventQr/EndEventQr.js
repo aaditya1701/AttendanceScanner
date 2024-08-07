@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import qrCode from '../../assets/Event-End.png';
 import './EventQr.css';
 
-const EndEventQr = () => {
-    const [timer, setTimer] = useState(15);
+const StartEventQr = () => {
+    const [timer, setTimer] = useState(900);
     const [captcha, setCaptcha] = useState('');
-    const [imageUrl, setImageUrl] = useState('path/to/end-event-image.png'); // Replace with actual image path
+    const [imageUrl] = useState(qrCode); // Replace with actual image path
 
     useEffect(() => {
         // Generate a random captcha
@@ -24,12 +25,23 @@ const EndEventQr = () => {
             await setDoc(docRef, { toggleState: true, timestamp: serverTimestamp(), captcha: generateCaptcha() }, { merge: true });
         };
 
+        const fetchCaptcha = async () => {
+            const docRef = doc(db, 'settings', 'attendanceControl');
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setCaptcha(data.captcha || ''); // Fetch and set captcha from Firestore
+            }
+        };
+
         updateToggleState();
+        fetchCaptcha();
 
         const interval = setInterval(() => {
             setTimer(prevTimer => {
                 if (prevTimer <= 1) {
                     clearInterval(interval);
+                    updateToggleStateToNull(); // Set toggleState to null when timer ends
                     return 0;
                 }
                 return prevTimer - 1;
@@ -39,14 +51,25 @@ const EndEventQr = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const updateToggleStateToNull = async () => {
+        const docRef = doc(db, 'settings', 'attendanceControl');
+        await setDoc(docRef, { toggleState: null }, { merge: true });
+    };
+
     return (
         <div className="event-qr-page">
-            <h1>End Event QR</h1>
-            <img src={imageUrl} alt="Event QR" />
-            <p>Captcha: {captcha}</p>
-            <p>Time Remaining: {timer}s</p>
+            <h1 align='center'>Event End</h1>
+            <div className='qrContainer'>
+                <div className='leftDiv'>
+                    <img src={imageUrl} alt="Event QR" className='qr' />
+                </div>
+                <div className='rightDiv'>
+                    <p>Captcha: {captcha}  <br></br>
+                        Time Remaining: {Math.floor(timer / 60) + " min " + timer % 60 + " sec"}</p>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default EndEventQr;
+export default StartEventQr;
