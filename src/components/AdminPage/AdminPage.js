@@ -14,7 +14,7 @@ const AdminPage = () => {
     useEffect(() => {
         const loggedIn = localStorage.getItem('adminLoggedIn');
         if (!loggedIn) {
-            navigate('/AdminLogin');
+            navigate('/');
         }
     }, [navigate]);
 
@@ -56,7 +56,7 @@ const AdminPage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('adminLoggedIn');
-        navigate('/AdminLogin');
+        navigate('/');
     };
 
     const handleToggleChange = async () => {

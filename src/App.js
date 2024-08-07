@@ -17,9 +17,9 @@ const App = () => {
         <Routes>
           <Route path="/EventStart" element={<StartAttendanceScanner />} />
           <Route path="/EventEnd" element={<EndAttendanceScanner />} />
-          <Route path="/Admin" element={isAdminLoggedIn ? <AdminPage /> : <Navigate to="/AdminLogin" />} />
-          <Route path="/StartEventQr" element={isAdminLoggedIn ? <StartEventQr /> : <Navigate to="/AdminLogin" />} />
-          <Route path="/EndEventQr" element={isAdminLoggedIn ? <EndEventQr /> : <Navigate to="/AdminLogin" />} />
+          <Route path="/Admin" element={isAdminLoggedIn ? <AdminPage /> : <Navigate to="/" />} />
+          <Route path="/StartEventQr" element={isAdminLoggedIn ? <StartEventQr /> : <Navigate to="/" />} />
+          <Route path="/EndEventQr" element={isAdminLoggedIn ? <EndEventQr /> : <Navigate to="/" />} />
           <Route path="/" element={<AdminLogin />} />
         </Routes>
       </div>
