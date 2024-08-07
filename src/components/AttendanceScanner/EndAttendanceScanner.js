@@ -8,14 +8,14 @@ const EndAttendanceScanner = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
     const [toggleState, setToggleState] = useState(false);
-    const [captcha, setCaptcha] = useState('');
-    const [dbCaptcha, setDbCaptcha] = useState('');
+    // const [captcha, setCaptcha] = useState('');
+    // const [dbCaptcha, setDbCaptcha] = useState('');
 
     useEffect(() => {
         const unsubscribe = onSnapshot(doc(db, 'settings', 'attendanceControl'), (doc) => {
             const data = doc.data();
             setToggleState(data.toggleState);
-            setDbCaptcha(data.captcha);
+            // setDbCaptcha(data.captcha);
         });
 
         return () => unsubscribe();
@@ -24,9 +24,9 @@ const EndAttendanceScanner = () => {
     const handleChange = (event) => {
         setEmail(event.target.value);
     };
-    const handleCaptchaChange = (event) => {
-        setCaptcha(event.target.value);
-    }
+    // const handleCaptchaChange = (event) => {
+    //     setCaptcha(event.target.value);
+    // }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -40,10 +40,10 @@ const EndAttendanceScanner = () => {
             setError('Attendance already marked.');
             return;
         }
-        if (captcha !== dbCaptcha) {
-            setError('CAPTCHA is incorrect.');
-            return;
-        }
+        // if (captcha !== dbCaptcha) {
+        //     setError('CAPTCHA is incorrect.');
+        //     return;
+        // }
 
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('email', '==', email));
@@ -57,6 +57,7 @@ const EndAttendanceScanner = () => {
                 });
 
                 Cookies.set('endAttendanceMarked', 'true', { expires: 1 });
+                setError('Attendance marked successfully!');
                 alert('Attendance marked successfully!');
             } else {
                 setError('Email not found.');
@@ -82,14 +83,14 @@ const EndAttendanceScanner = () => {
                         onChange={handleChange}
                         required
                     />
-                    <label htmlFor="captcha">CAPTCHA:</label>
+                    {/* <label htmlFor="captcha">CAPTCHA:</label>
                     <input
                         type="text"
                         id="captcha"
-                        value={captcha}
-                        onChange={handleCaptchaChange}
+                        // value={captcha}
+                        // onChange={handleCaptchaChange}
                         required
-                    />
+                    /> */}
                 </div>
                 <button type="submit">Submit</button>
                 {error && <p className="error">{error}</p>}

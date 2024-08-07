@@ -11,31 +11,31 @@ const StartEventQr = () => {
 
     useEffect(() => {
         // Generate a random captcha
-        const generateCaptcha = () => {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let captchaStr = '';
-            for (let i = 0; i < 6; i++) {
-                captchaStr += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return captchaStr;
-        };
+        // const generateCaptcha = () => {
+        //     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        //     let captchaStr = '';
+        //     for (let i = 0; i < 6; i++) {
+        //         captchaStr += chars.charAt(Math.floor(Math.random() * chars.length));
+        //     }
+        //     return captchaStr;
+        // };
 
         const updateToggleState = async () => {
             const docRef = doc(db, 'settings', 'attendanceControl');
-            await setDoc(docRef, { toggleState: true, timestamp: serverTimestamp(), captcha: generateCaptcha() }, { merge: true });
+            await setDoc(docRef, { toggleState: true, timestamp: serverTimestamp() }, { merge: true });
         };
 
-        const fetchCaptcha = async () => {
-            const docRef = doc(db, 'settings', 'attendanceControl');
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                setCaptcha(data.captcha || ''); // Fetch and set captcha from Firestore
-            }
-        };
+        // const fetchCaptcha = async () => {
+        //     const docRef = doc(db, 'settings', 'attendanceControl');
+        //     const docSnap = await getDoc(docRef);
+        //     if (docSnap.exists()) {
+        //         const data = docSnap.data();
+        //         setCaptcha(data.captcha || ''); // Fetch and set captcha from Firestore
+        //     }
+        // };
 
         updateToggleState();
-        fetchCaptcha();
+        // fetchCaptcha();
 
         const interval = setInterval(() => {
             setTimer(prevTimer => {
@@ -64,8 +64,8 @@ const StartEventQr = () => {
                     <img src={imageUrl} alt="Event QR" className='qr' />
                 </div>
                 <div className='rightDiv'>
-                    <p>Captcha: {captcha}  <br></br>
-                        Time Remaining: {Math.floor(timer / 60) + " min " + timer % 60 + " sec"}</p>
+                    {/* Captcha: {captcha}  <br></br> */}
+                    <p>Time Remaining: {Math.floor(timer / 60) + " min " + timer % 60 + " sec"}</p>
                 </div>
             </div>
         </div>
