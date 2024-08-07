@@ -20,8 +20,7 @@ const App = () => {
           <Route path="/Admin" element={isAdminLoggedIn ? <AdminPage /> : <Navigate to="/AdminLogin" />} />
           <Route path="/StartEventQr" element={isAdminLoggedIn ? <StartEventQr /> : <Navigate to="/AdminLogin" />} />
           <Route path="/EndEventQr" element={isAdminLoggedIn ? <EndEventQr /> : <Navigate to="/AdminLogin" />} />
-          <Route path="/AdminLogin" element={<AdminLogin />} />
-          <Route path="/" element={<h1>Welcome to the Attendance App</h1>} />
+          <Route path="/" element={<AdminLogin />} />
         </Routes>
       </div>
     </Router>
