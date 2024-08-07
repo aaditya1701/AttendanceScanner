@@ -1,4 +1,4 @@
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -34,7 +34,7 @@ const StartAttendanceScanner = () => {
         setError(null); // Clear previous error messages
 
         if (!toggleState) {
-            setError('Updates are blocked by the admin.');
+            setError('Time limit exceded');
             return;
         }
 
@@ -43,11 +43,10 @@ const StartAttendanceScanner = () => {
             return;
         }
 
-        // Commenting out the cookie part
-        // if (Cookies.get('startAttendanceMarked')) {
-        //     setError('Attendance already marked.');
-        //     return;
-        // }
+        if (Cookies.get('startAttendanceMarked')) {
+            setError('Attendance already marked.');
+            return;
+        }
 
         const usersRef = collection(db, 'users');
         const q = query(usersRef, where('email', '==', email));
@@ -60,8 +59,7 @@ const StartAttendanceScanner = () => {
                     startFlag: true
                 });
 
-                // Commenting out the cookie part
-                // Cookies.set('startAttendanceMarked', 'true', { expires: 1 });
+                Cookies.set('startAttendanceMarked', 'true', { expires: 1 });
                 alert('Attendance marked successfully!');
             } else {
                 setError('Email not found.');

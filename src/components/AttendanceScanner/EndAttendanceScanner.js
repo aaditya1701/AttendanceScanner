@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { collection, query, where, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import './AttendanceScanner.css';
@@ -32,14 +32,14 @@ const EndAttendanceScanner = () => {
         event.preventDefault();
 
         if (!toggleState) {
-            setError('Updates are blocked by the admin.');
+            setError('Time limit exceded');
             return;
         }
 
-        // if (Cookies.get('endAttendanceMarked')) {
-        //     setError('Attendance already marked.');
-        //     return;
-        // }
+        if (Cookies.get('endAttendanceMarked')) {
+            setError('Attendance already marked.');
+            return;
+        }
         if (captcha !== dbCaptcha) {
             setError('CAPTCHA is incorrect.');
             return;
@@ -56,7 +56,7 @@ const EndAttendanceScanner = () => {
                     endFlag: true
                 });
 
-                // Cookies.set('endAttendanceMarked', 'true', { expires: 1 });
+                Cookies.set('endAttendanceMarked', 'true', { expires: 1 });
                 alert('Attendance marked successfully!');
             } else {
                 setError('Email not found.');
