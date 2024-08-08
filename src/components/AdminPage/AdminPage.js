@@ -126,7 +126,8 @@ const AdminPage = () => {
                             <th>Email</th>
                             <th>College</th>
                             <th>Year</th>
-                            <th>Attendance</th>
+                            <th>Attendance-Start</th>
+                            <th>Attendance-End</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +141,19 @@ const AdminPage = () => {
                                     <label className="switch">
                                         <input
                                             type="checkbox"
-                                            checked={user.startFlag && user.endFlag}
+                                            checked={user.startFlag}
+                                            onChange={async (e) => {
+                                                await handleSwitchChange(user.id, e.target.checked);
+                                            }}
+                                        />
+                                        <span className="slider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={user.endFlag}
                                             onChange={async (e) => {
                                                 await handleSwitchChange(user.id, e.target.checked);
                                             }}
