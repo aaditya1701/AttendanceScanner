@@ -21,7 +21,7 @@ const AdminLogin = () => {
                 const data = docSnap.data();
                 if (data.userId === userId && data.password === password) {
                     localStorage.setItem('adminLoggedIn', 'true');
-                    navigate('/Admin'); // Redirect to AdminPage
+                    navigate('/'); // Redirect to AdminPage
                 } else {
                     setError('Invalid credentials');
                 }

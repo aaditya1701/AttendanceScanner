@@ -25,14 +25,14 @@ const StartEventQr = () => {
             await setDoc(docRef, { toggleState: true, timestamp: serverTimestamp(), }, { merge: true });
         };
 
-        const fetchCaptcha = async () => {
-            const docRef = doc(db, 'settings', 'attendanceControl');
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                // setCaptcha(data.captcha || ''); // Fetch and set captcha from Firestore
-            }
-        };
+        // const fetchCaptcha = async () => {
+        //     const docRef = doc(db, 'settings', 'attendanceControl');
+        //     const docSnap = await getDoc(docRef);
+        //     if (docSnap.exists()) {
+        //         const data = docSnap.data();
+        //         // setCaptcha(data.captcha || ''); // Fetch and set captcha from Firestore
+        //     }
+        // };
 
         updateToggleState();
         // fetchCaptcha();

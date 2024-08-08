@@ -6,7 +6,7 @@ import './EventQr.css';
 
 const StartEventQr = () => {
     const [timer, setTimer] = useState(900);
-    const [captcha, setCaptcha] = useState('');
+    // const [captcha, setCaptcha] = useState('');
     const [imageUrl] = useState(qrCode); // Replace with actual image path
 
     useEffect(() => {
