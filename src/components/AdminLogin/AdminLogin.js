@@ -20,13 +20,8 @@ const AdminLogin = () => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 if (data.userId === userId && data.password === password) {
-                    if(localStorage.getItem('adminLoggedIn'){
-                        navigate('/admin'); // Redirect to AdminPage
-                    }else{
                         localStorage.setItem('adminLoggedIn', 'true');
-                        navigate('/admin');
-                    }
-                        
+                        navigate('/admin');                        
                 }
                 else {
                     setError('Invalid credentials');
