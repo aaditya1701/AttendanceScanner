@@ -22,7 +22,10 @@ const AdminLogin = () => {
                 if (data.userId === userId && data.password === password) {
                     localStorage.setItem('adminLoggedIn', 'true');
                     navigate('/admin'); // Redirect to AdminPage
-                } else {
+                }else if(localStorage.setItem('adminLoggedIn', 'true')){
+                    navigate('/admin');
+                }
+                else {
                     setError('Invalid credentials');
                 }
             } else {
